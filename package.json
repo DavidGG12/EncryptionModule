@@ -1,0 +1,15 @@
+{
+  "name": "encryptionmodule",
+  "version": "1.0.0",
+  "description": "An app to encrypt words with a secret key.",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ian David Garcia Garcia",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^38.3.0"
+  }
+}
