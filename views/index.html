@@ -2,19 +2,44 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Module Encryption</title>
   </head>
   <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
+    <div class="container shadow p-3 mt-5 bg-body-tertiary rounded">
+        <h2>Encryption Module</h2>
+        <h6>Put your word and a Secret Key to encrypt or decrypt your word!</h6>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="txtSecretKey" placeholder="Secret Key">
+                    <label for="txtSecretKey">Secret Key</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary">Encrypt</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary">Decrypt</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="txtSecretKey" placeholder="Your Word">
+                    <label for="txtSecretKey">Your Word</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="txtSecretKey" placeholder="Result" readonly>
+                    <label for="txtSecretKey">Result</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/prueba.js"></script>
   </body>
 </html>

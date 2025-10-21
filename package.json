@@ -10,6 +10,10 @@
   "author": "Ian David Garcia Garcia",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^38.3.0"
+    "electron": "^38.3.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8"
   }
 }
