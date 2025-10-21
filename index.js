@@ -6,7 +6,15 @@ require('electron-reload')(__dirname, {
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
-        height: 450
+        height: 450,
+        resizable: false,
+        maximizable: false,
+        minimizable: true,
+        fullscreenable: false,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
     })
 
     win.loadFile('./views/index.html')
