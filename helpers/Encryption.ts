@@ -1,4 +1,5 @@
-import { setUncaughtExceptionCaptureCallback } from "process";
+import * as crypto from "crypto";
+import * as forge from "node-forge";
 
 export class Encryption{
     private static _secretSalt: string = "dCdV1UI+09PYTadlbOOIIg==";
@@ -14,61 +15,56 @@ export class Encryption{
         return Encryption._instance;
     }
 
-    public static async encrypt(word: string, secretKey: string): Promise<string>{
+    private get secretSalt(){
+        return Encryption._secretSalt;
+    }
+
+    private get instance(){
+        return Encryption._instance;
+    }
+
+    public encrypt(word: string, secretKey: string): string | null{
         try{
-            const keyBytes = new TextEncoder().encode(secretKey);
-            const saltBytes = new TextEncoder().encode(Encryption._secretSalt);
+            const keyBuffer = Buffer.from(secretKey, 'base64');
+            const saltBuffer = Buffer.from(this.secretSalt, 'base64');
 
-            const keyMaterial = await crypto.subtle.importKey(
-                'raw',
-                new TextEncoder().encode(secretKey),
-                { name: "PBKDF2" },
-                false,
-                ["deriveBits"]
-            );
+            const derivedKey = crypto.pbkdf2Sync(keyBuffer, saltBuffer, 10000, 48, 'sha1');
 
-            const derivedBits = await crypto.subtle.deriveBits(
-                {
-                    name: "PBKDF2",
-                    salt: new TextEncoder().encode(Encryption._secretSalt),
-                    iterations: 10000,
-                    hash: "SHA-1"
-                },
-                keyMaterial,
-                48 * 4
-            );
+            const key = derivedKey.slice(0,32);
+            const iv = derivedKey.slice(32,48);
 
-            const derivedBytes = new Uint8Array(derivedBits);
-            const aesKey = derivedBytes.slice(0,32);
-            const iv = derivedBytes.slice(32,48);
+            const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 
-            console.log("TAMAÑO DE IV:", iv.length);
+            let encrypted = cipher.update(word, 'utf8', 'base64');
+            encrypted += cipher.final('base64');
 
-            const cryptoKey = await crypto.subtle.importKey(
-                "raw",
-                aesKey,
-                { name: "AES-CBC" },
-                false,
-                ["encrypt"]
-            );
+            return encrypted;
+        } catch(error){
+            console.error(error);
+            throw error;
+        }
+    }
 
-            const encrypted = await crypto.subtle.encrypt(
-                { name: "AES-CBC", iv },
-                cryptoKey,
-                new TextEncoder().encode(word)
-            );
+    public decrypt(word: string, secretKey: string){
+        try{
+            const keyBuffer = Buffer.from(secretKey, 'base64');
+            const saltBuffer = Buffer.from(this.secretSalt, 'base64');
 
-            return btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-        }catch(error){
+            const derivedKey = crypto.pbkdf2Sync(keyBuffer, saltBuffer, 10000, 48, 'sha1');
+
+            const key = derivedKey.slice(0,32);
+            const iv = derivedKey.slice(32,48);
+
+            const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
+
+            let decrypted = decipher.update(word, 'base64', 'utf8');
+            decrypted += decipher.final('utf8');
+
+            return decrypted;
+        } catch(error){
             console.error(error);
             throw error;
         }
     }
 }
 
-(async () => {
-    const textoOriginal = "Hola mundo desde TypeScript";
-
-    const cifrado = await Encryption.encrypt(textoOriginal, "yiKRn4wrzAMjw98QrlyF3QvFSrL3tudRjCKxGnqTzOM=");
-    console.log("Texto encriptado:", cifrado);
-})();
