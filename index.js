@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require('electron')
+const path = require('node:path')
+
 require('electron-reload')(__dirname, {
     electron: require(`${__dirname}/node_modules/electron`)
 })
@@ -12,11 +14,13 @@ const createWindow = () => {
         minimizable: true,
         fullscreenable: false,
         webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: true
         }
     })
 
+    // win.webContents.openDevTools();
     win.loadFile('./views/index.html')
 }
 

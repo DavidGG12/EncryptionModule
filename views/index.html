@@ -6,10 +6,14 @@
     <title>Module Encryption</title>
   </head>
   <body>
-    <div class="container shadow p-3 mt-5 bg-body-tertiary rounded">
+    <div class="container shadow p-3 mt-3 bg-body-tertiary rounded">
         <h2>Encryption Module</h2>
         <h6>Put your word and a Secret Key to encrypt or decrypt your word!</h6>
         <br />
+        <div class="alert alert-danger alert-dismissible" id="divAlert" role="alert">
+            A simple danger alert—check it out!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
@@ -18,10 +22,10 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <button type="button" class="btn btn-primary">Encrypt</button>
+                <button type="button" class="btn btn-primary" id="btnEncrypt">Encrypt</button>
             </div>
             <div class="col-md-3">
-                <button type="button" class="btn btn-primary">Decrypt</button>
+                <button type="button" class="btn btn-primary" id="btnDecrypt">Decrypt</button>
             </div>
         </div>
         <div class="row">
@@ -40,9 +44,6 @@
         </div>
     </div>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/prueba.js"></script>
+    <script src="../js/main.js"></script>
   </body>
 </html>
-<script>
-
-</script>

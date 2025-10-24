@@ -1,32 +1,31 @@
-import * as crypto from "crypto";
-import * as forge from "node-forge";
+const crypto = require('crypto');
 
-export class Encryption{
-    private static _secretSalt: string = "dCdV1UI+09PYTadlbOOIIg==";
-    private static _instance: Encryption;
+class Encryption{
+    static _secretSalt = "dCdV1UI+09PYTadlbOOIIg==";
+    static _instance;
 
-    private constructor() {}
+    constructor() {}
 
-    public static getInstance(): Encryption{
-        if(Encryption._instance != null || Encryption._instance != undefined) return Encryption._instance;
+    static getInstance(){
+        if(Encryption._instance) return Encryption._instance;
 
         Encryption._instance = new Encryption();
 
         return Encryption._instance;
     }
 
-    private get secretSalt(){
+    get _secretSalt(){
         return Encryption._secretSalt;
     }
 
-    private get instance(){
+    get _instance(){
         return Encryption._instance;
     }
 
-    public encrypt(word: string, secretKey: string): string | null{
+    encrypt(word, secretKey){
         try{
             const keyBuffer = Buffer.from(secretKey, 'base64');
-            const saltBuffer = Buffer.from(this.secretSalt, 'base64');
+            const saltBuffer = Buffer.from(this._secretSalt, 'base64');
 
             const derivedKey = crypto.pbkdf2Sync(keyBuffer, saltBuffer, 10000, 48, 'sha1');
 
@@ -45,10 +44,10 @@ export class Encryption{
         }
     }
 
-    public decrypt(word: string, secretKey: string){
+    decrypt(word, secretKey){
         try{
             const keyBuffer = Buffer.from(secretKey, 'base64');
-            const saltBuffer = Buffer.from(this.secretSalt, 'base64');
+            const saltBuffer = Buffer.from(this._secretSalt, 'base64');
 
             const derivedKey = crypto.pbkdf2Sync(keyBuffer, saltBuffer, 10000, 48, 'sha1');
 
@@ -68,3 +67,4 @@ export class Encryption{
     }
 }
 
+module.exports = { Encryption };
